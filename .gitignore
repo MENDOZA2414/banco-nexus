@@ -1,0 +1,26 @@
+# node_modules
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# variables de entorno
+.env
+.env.*
+frontend/.env
+backend/.env
+
+# logs
+*.log
+logs/
+
+# sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# builds (por si acaso)
+dist/
+build/

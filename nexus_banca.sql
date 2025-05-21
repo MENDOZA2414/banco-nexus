@@ -55,7 +55,10 @@ INSERT INTO transacciones (cuenta_id, tipo, monto) VALUES
 (2, 'deposito', 7500.00),
 (3, 'deposito', 3200.00),
 (4, 'deposito', 10200.00),
-(5, 'deposito', 8700.00),
+(5, 'deposito', 8700.00);
+
+-- Transacciones
+INSERT INTO transacciones (cuenta_id, tipo, monto) VALUES
 (1, 'retiro', 1500.00),
 (2, 'retiro', 2000.00),
 (3, 'retiro', 500.00),

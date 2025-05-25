@@ -13,12 +13,15 @@ const CuentaInfo = ({ cuenta, onActualizar }) => {
     }
 
     try {
-      await realizarTransaccion(cuenta.cuenta, tipo, monto);
+      const data = await realizarTransaccion(cuenta.cuenta_id, tipo, monto);
+      console.log('Respuesta del backend:', data);
+
       setMensaje(`✅ ${tipo === 'deposito' ? 'Depósito' : 'Retiro'} exitoso.`);
-      onActualizar(cuenta.cuenta); // Recarga los datos de la cuenta
+      onActualizar(cuenta.numero_cuenta); // Recarga datos desde el número de cuenta
     } catch (error) {
       setMensaje(`❌ ${error.message}`);
     }
+
 
     setTimeout(() => setMensaje(''), 3000);
     setMonto('');

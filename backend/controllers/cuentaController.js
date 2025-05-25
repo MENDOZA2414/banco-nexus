@@ -27,6 +27,7 @@ const getCuentaInfo = async (req, res) => {
     `, [cuenta.cuenta_id]);
 
     res.json({
+      cuenta_id: cuenta.cuenta_id,
       cuenta: cuenta.numero_cuenta,
       cliente: cuenta.nombre,
       saldo: cuenta.saldo,

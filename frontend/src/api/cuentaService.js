@@ -9,18 +9,23 @@ export async function getCuentaData(numeroCuenta) {
   }
 }
 
-export async function realizarTransaccion(numeroCuenta, tipo, monto) {
+export async function realizarTransaccion(cuenta_id, tipo, monto, sucursal = 'CDMX') {
   try {
-    const response = await fetch(`http://localhost:3000/api/cuenta/${numeroCuenta}/${tipo}`, {
+    const response = await fetch(`http://localhost:3000/api/cuenta/${tipo}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ monto: parseFloat(monto) })
+      body: JSON.stringify({
+        cuenta_id: parseInt(cuenta_id),
+        monto: parseFloat(monto),
+        sucursal
+      })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data?.mensaje || 'Error en la transacción');
+      console.error('Respuesta del servidor:', data);
+      throw new Error(data?.error || data?.mensaje || 'Error en la transacción');
     }
 
     return data;

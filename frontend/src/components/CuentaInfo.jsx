@@ -29,6 +29,26 @@ const CuentaInfo = ({ cuenta, onActualizar }) => {
 
   if (!cuenta) return null;
 
+  const getColorSucursal = (sucursal) => {
+    switch (sucursal) {
+      case 'LPZ': return '#16a085';  // Verde mar
+      case 'TIJ': return '#2980b9';  // Azul
+      case 'CDMX': return '#8e44ad'; // Púrpura
+      case 'GDL': return '#d35400';  // Naranja
+      default: return '#7f8c8d';     // Gris neutro
+    }
+  };
+
+  const getIconSucursal = (sucursal) => {
+    switch (sucursal) {
+      case 'LPZ': return '🌊';
+      case 'TIJ': return '🌉';
+      case 'CDMX': return '🏙️';
+      case 'GDL': return '🎸';
+      default: return '📍';
+    }
+  };
+
   return (
     <div style={{
       backgroundColor: '#ffffff',
@@ -52,21 +72,41 @@ const CuentaInfo = ({ cuenta, onActualizar }) => {
       <p><strong>Cliente:</strong> {cuenta.cliente}</p>
       <p><strong>Saldo:</strong> ${cuenta.saldo}</p>
 
-      <h3 style={{ marginTop: '20px' }}>Transacciones</h3>
-      {cuenta.transacciones.length === 0 ? (
-        <p>Sin transacciones registradas.</p>
-      ) : (
-        <ul style={{ listStyle: 'none', paddingLeft: 0, marginTop: '10px' }}>
-          {cuenta.transacciones.map((t, i) => (
-            <li key={i} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', fontSize: '16px' }}>
-              {t.tipo === 'deposito' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-              <span style={{ marginLeft: 10 }}>
-                {t.tipo} - ${t.monto} - {t.sucursal} - {new Date(t.fecha).toLocaleString()}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <h3 style={{ marginTop: '20px' }}>Transacciones ({cuenta.transacciones.length})</h3>
+{cuenta.transacciones.length === 0 ? (
+  <p>Sin transacciones registradas.</p>
+) : (
+  <div style={{
+    maxHeight: '220px',
+    overflowY: 'auto',
+    marginTop: '10px',
+    border: '1px solid #eee',
+    padding: '10px',
+    borderRadius: '6px'
+  }}>
+    <ul style={{ listStyle: 'none', paddingLeft: 0, margin: 0 }}>
+      {cuenta.transacciones.map((t, i) => (
+        <li key={i} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', fontSize: '15px' }}>
+          <strong style={{ marginRight: 8 }}>#{i + 1}</strong>
+          {t.tipo === 'deposito' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+          <span style={{ marginLeft: 10 }}>
+            {t.tipo} - ${t.monto} -
+            <span style={{
+              color: getColorSucursal(t.sucursal),
+              fontWeight: 'bold',
+              marginLeft: '6px',
+              marginRight: '6px'
+            }}>
+              {getIconSucursal(t.sucursal)} {t.sucursal}
+            </span>
+            - {new Date(t.fecha).toLocaleString()}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
 
       <div style={{ marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center' }}>
         <input

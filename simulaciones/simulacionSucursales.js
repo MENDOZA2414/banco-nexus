@@ -1,7 +1,7 @@
 const API_URL = 'http://localhost:3000/api/cuenta';
 
 // Sucursales simuladas
-const sucursales = ['LPZ', 'TIJ', 'CDMX', 'GDL', 'QRO'];
+const sucursales = ['LPZ', 'TIJ', 'CDMX', 'GDL'];
 
 // Generar operaciones por sucursal (ej. 5 por sucursal)
 const operaciones = [];

@@ -61,7 +61,7 @@ const CuentaInfo = ({ cuenta, onActualizar }) => {
             <li key={i} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', fontSize: '16px' }}>
               {t.tipo === 'deposito' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
               <span style={{ marginLeft: 10 }}>
-                {t.tipo} - ${t.monto} - {new Date(t.fecha).toLocaleString()}
+                {t.tipo} - ${t.monto} - {t.sucursal} - {new Date(t.fecha).toLocaleString()}
               </span>
             </li>
           ))}

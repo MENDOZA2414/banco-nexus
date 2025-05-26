@@ -1,7 +1,8 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
+// Simulación de consulta de cuenta en la sucursal TIJ
 const consultarCuentaTIJ = async () => {
-  const numero_cuenta = '1001001001'; // Asegúrate que sea el número correcto
+  const numero_cuenta = '1001001001'; 
   const start = new Date();
 
   try {

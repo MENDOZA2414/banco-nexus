@@ -1,5 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
+// Simulación de retiro más grande en la sucursal LPZ
 const ejecutarRetiroGrandeLPZ = async () => {
   const cuenta_id = 1;
   const monto = 5000; // retiro grande

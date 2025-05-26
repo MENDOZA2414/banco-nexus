@@ -1,5 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
+// Simulación de retiro en la sucursal GDL
 const ejecutarRetiroGDL = async () => {
   const cuenta_id = 1;
   const monto = 150; // retiro pequeño

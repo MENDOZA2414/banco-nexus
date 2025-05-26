@@ -1,5 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
+// Simulación de depósito en la sucursal CDMX
 const ejecutarDepositoCDMX = async () => {
   const cuenta_id = 1;
   const monto = 300;

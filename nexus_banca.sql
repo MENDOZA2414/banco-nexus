@@ -64,3 +64,7 @@ INSERT INTO transacciones (cuenta_id, tipo, monto) VALUES
 (3, 'retiro', 500.00),
 (4, 'retiro', 1200.00),
 (5, 'retiro', 700.00);
+
+ALTER TABLE transacciones
+ADD sucursal VARCHAR(50) NOT NULL AFTER monto;
+

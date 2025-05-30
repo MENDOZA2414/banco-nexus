@@ -1,7 +1,9 @@
 const db = require('../config/db');
 
+// Obtener información de cuenta y transacciones
 const getCuentaInfo = async (req, res) => {
   const { numero_cuenta } = req.params;
+  console.log('Buscando cuenta:', numero_cuenta);
 
   try {
     // Obtener datos de la cuenta y el cliente
@@ -39,7 +41,13 @@ const getCuentaInfo = async (req, res) => {
   }
 };
 
+// Depositar monto a la cuenta
 const depositar = async (req, res) => {
+  // Si estamos en una réplica, no permitir la escritura
+  if (db.isReadOnly()) {
+    return res.status(503).json({ error: 'Servidor en modo lectura. No se permite realizar depósitos en una réplica.' });
+  }
+
   const { cuenta_id, monto, sucursal } = req.body;
 
   // Validaciones
@@ -77,7 +85,13 @@ const depositar = async (req, res) => {
   }
 };
 
+// Retirar monto de la cuenta
 const retirar = async (req, res) => {
+  // Si estamos en una réplica, no permitir la escritura
+  if (db.isReadOnly()) {
+    return res.status(503).json({ error: 'Servidor en modo lectura. No se permite realizar retiros en una réplica.' });
+  }
+
   const { cuenta_id, monto, sucursal } = req.body;
 
   // Validaciones básicas

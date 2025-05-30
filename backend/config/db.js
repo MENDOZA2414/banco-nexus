@@ -3,6 +3,7 @@ require('dotenv').config();
 
 let pool;
 let isReadOnly = false; // Indicador global
+let currentHost = 'localhost'; // Host actual conectado
 
 // Configuración del nodo maestro
 const masterConfig = {
@@ -44,6 +45,7 @@ async function connectToDatabase() {
     pool = await mysql.createPool(masterConfig);
     await pool.query('SELECT 1');
     isReadOnly = false;
+    currentHost = masterConfig.host;
     console.log('✅ Conectado al nodo maestro');
   } catch (err) {
     console.warn('⚠️ Nodo maestro no disponible, intentando con réplicas...');
@@ -52,6 +54,7 @@ async function connectToDatabase() {
         pool = await mysql.createPool(config);
         await pool.query('SELECT 1');
         isReadOnly = true;
+        currentHost = config.host;
         console.log(`🟢 Conectado a réplica en ${config.host}`);
         break;
       } catch (replicaErr) {
@@ -69,7 +72,23 @@ async function connectToDatabase() {
 connectToDatabase();
 
 module.exports = {
-  query: (...args) => pool.query(...args),
+  query: async (...args) => {
+    try {
+      return await pool.query(...args);
+    } catch (error) {
+      console.error('❌ Error al consultar. Intentando reconectar...', error.code);
+
+      // Intentar reconectar a base disponible
+      await connectToDatabase();
+
+      try {
+        return await pool.query(...args); // Reintento
+      } catch (secondError) {
+        console.error('🚫 Fallo también el reintento de conexión.');
+        throw secondError;
+      }
+    }
+  },
   pool,
   isReadOnly: () => isReadOnly
 };

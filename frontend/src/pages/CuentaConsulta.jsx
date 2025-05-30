@@ -6,11 +6,13 @@ import { getCuentaData } from '../api/cuentaService';
 const CuentaConsulta = () => {
   const [cuenta, setCuenta] = useState(null);
   const [error, setError] = useState('');
+  const [conectando, setConectando] = useState(false);
 
   const manejarBusqueda = async (numeroCuentaParam) => {
     const cuentaID = numeroCuentaParam || cuenta?.cuenta;
     if (!cuentaID) return;
 
+    setConectando(true); // Activar bandera de espera
     try {
       const data = await getCuentaData(cuentaID);
       setCuenta(data);
@@ -18,6 +20,8 @@ const CuentaConsulta = () => {
     } catch (err) {
       setCuenta(null);
       setError('No se encontró la cuenta o hubo un error.');
+    } finally {
+      setConectando(false); // Desactivar bandera de espera
     }
   };
 
@@ -40,7 +44,17 @@ const CuentaConsulta = () => {
         Consulta de Cuenta Bancaria
       </h1>
 
-      <CuentaForm onBuscar={manejarBusqueda} />
+      <CuentaForm onBuscar={manejarBusqueda} deshabilitado={conectando} />
+
+      {conectando && (
+        <div style={{
+          marginBottom: '10px',
+          fontWeight: 'bold',
+          color: '#d35400'
+        }}>
+          ⏳ Reconectando al servidor, por favor espera...
+        </div>
+      )}
 
       {error && (
         <p style={{
@@ -68,7 +82,13 @@ const CuentaConsulta = () => {
         </div>
       )}
 
-      {cuenta && <CuentaInfo cuenta={cuenta} onActualizar={manejarBusqueda} />}
+      {cuenta && (
+        <CuentaInfo
+          cuenta={cuenta}
+          onActualizar={manejarBusqueda}
+          deshabilitado={conectando}
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const CuentaForm = ({ onBuscar }) => {
+const CuentaForm = ({ onBuscar, deshabilitado }) => {
   const [numeroCuenta, setNumeroCuenta] = useState('');
 
   const handleSubmit = (e) => {
@@ -17,10 +17,19 @@ const CuentaForm = ({ onBuscar }) => {
         placeholder="Número de cuenta"
         value={numeroCuenta}
         onChange={(e) => setNumeroCuenta(e.target.value)}
+        disabled={deshabilitado}
         style={styles.input}
       />
-      <button type="submit" style={styles.button}>
-        Consultar
+      <button
+        type="submit"
+        disabled={deshabilitado}
+        style={{
+          ...styles.button,
+          backgroundColor: deshabilitado ? '#ccc' : '#2980b9',
+          cursor: deshabilitado ? 'not-allowed' : 'pointer'
+        }}
+      >
+        {deshabilitado ? 'Esperando...' : 'Consultar'}
       </button>
     </form>
   );
@@ -44,11 +53,9 @@ const styles = {
   button: {
     padding: '10px 20px',
     fontSize: '16px',
-    backgroundColor: '#2980b9',
     color: '#fff',
     border: 'none',
     borderRadius: '5px',
-    cursor: 'pointer',
   },
 };
 
